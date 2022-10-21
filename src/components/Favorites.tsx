@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Button } from "react-native";
+import { Button, View } from "react-native";
 import { RootStackParamList, TVPROPS } from "../../types";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -11,13 +11,10 @@ import {
   FavoritesContext,
 } from "../context/context";
 import SearchBar from "./SearchBar";
-import axios from "axios";
 import RadioFilter from "./RadioFilter";
 import { ScrollView } from "react-native-gesture-handler";
 import Poster from "./Poster";
 import { styles } from "../styles/styles";
-
-const API_KEY = "8ecf88bb"; // OMDb API Key
 
 type FavoriteScreenProps = NativeStackScreenProps<
   RootStackParamList,
@@ -29,7 +26,6 @@ const saveToLocalStorage = async (items: TVPROPS[]) => {
 };
 
 const Favorites: React.FC<FavoriteScreenProps> = (props) => {
-  const [tvData, setTVData] = useContext(TVDataContext);
   const [search, setSearch] = useContext(SearchContext);
   const [watched, setWatched] = useContext(WatchListContext);
   const [checkBox, setCheckBox] = useContext(CheckBoxContext);
@@ -37,24 +33,42 @@ const Favorites: React.FC<FavoriteScreenProps> = (props) => {
 
   return (
     <>
-      <Button
-        title="Go back to search"
-        onPress={() => props.navigation.navigate("Home")}
-      />
+      <View style={styles.navButtons}>
+        <View
+          style={{
+            width: "48%",
+            marginHorizontal: 5,
+          }}
+        >
+          <Button
+            title="Go back to Search"
+            onPress={() => {
+              props.navigation.navigate("Home");
+              setSearch("");
+            }}
+          />
+        </View>
+        <View style={{ width: "48%" }}>
+          <Button
+            title="View Watch List"
+            onPress={() => {
+              props.navigation.navigate("WatchedList");
+              setSearch("");
+            }}
+          />
+        </View>
+      </View>
       <SearchBar setSearch={setSearch} search={search} />
       <RadioFilter setCheckBox={setCheckBox} checkBox={checkBox} />
       <ScrollView contentContainerStyle={styles.flexRow}>
         {favorites
           ?.filter((w) => w.Title.includes(search))
+          .sort(
+            (a, b) =>
+              parseInt(b.Year.slice(0, 3)) - parseInt(a.Year.slice(0, 3))
+          )
           .map((data: TVPROPS, index: number) => (
-            <Poster
-              key={index}
-              data={data}
-              watched={watched}
-              setWatched={setWatched}
-              saveToLocalStorage={saveToLocalStorage}
-              checkBox={checkBox}
-            />
+            <Poster key={index} data={data} />
           ))}
       </ScrollView>
     </>

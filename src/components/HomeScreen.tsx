@@ -20,14 +20,9 @@ const API_KEY = "8ecf88bb"; // OMDb API Key
 
 type HomeScreenProps = NativeStackScreenProps<RootStackParamList, "Home">;
 
-const saveToLocalStorage = async (items: TVPROPS[]) => {
-  await AsyncStorage.setItem("react-watched", JSON.stringify(items));
-};
-
 const HomeScreen: React.FC<HomeScreenProps> = (props) => {
   const [tvData, setTVData] = useContext(TVDataContext);
   const [search, setSearch] = useContext(SearchContext);
-  const [watched, setWatched] = useContext(WatchListContext);
   const [checkBox, setCheckBox] = useContext(CheckBoxContext);
   const handleSearch = async (searchInput: string) => {
     let type: string = "";
@@ -76,7 +71,7 @@ const HomeScreen: React.FC<HomeScreenProps> = (props) => {
           <Button
             title="View Favorites"
             onPress={() => {
-              props.navigation.navigate("WatchedList");
+              props.navigation.navigate("Favorites");
               setSearch("");
             }}
           />
@@ -90,14 +85,7 @@ const HomeScreen: React.FC<HomeScreenProps> = (props) => {
       <RadioFilter setCheckBox={setCheckBox} checkBox={checkBox} />
       <ScrollView contentContainerStyle={styles.flexRow}>
         {tvData.map((data: TVPROPS, index: number) => (
-          <Poster
-            key={index}
-            checkBox={checkBox}
-            data={data}
-            watched={watched}
-            setWatched={setWatched}
-            saveToLocalStorage={saveToLocalStorage}
-          />
+          <Poster key={index} data={data} />
         ))}
       </ScrollView>
     </>

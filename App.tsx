@@ -11,6 +11,7 @@ import {
   WatchListContext,
   WatchedListVisibleContext,
   CheckBoxContext,
+  FavoritesContext,
 } from "./src/context/context";
 import Favorites from "./src/components/Favorites";
 
@@ -18,14 +19,20 @@ export default function App() {
   const [search, setSearch] = useState<string>("");
   const [tvData, setTVData] = useState<TVPROPS[]>([]);
   const [watched, setWatched] = useState<TVPROPS[]>([]);
+  const [favorites, setFavorites] = useState<TVPROPS[]>([]);
   const [watchedListVisible, setWatchedListVisible] = useState<boolean>(false);
   const [checkBox, setCheckBox] = useState<string>("All");
 
   const getLocalStorage = async () => {
-    const movieFavourites = await AsyncStorage.getItem("react-watched");
-    if (movieFavourites !== null) {
-      const movieFavouritesParse: TVPROPS[] = JSON.parse(movieFavourites);
-      setWatched(movieFavouritesParse);
+    const watchedList = await AsyncStorage.getItem("react-watched");
+    const favoriteList = await AsyncStorage.getItem("react-favorites");
+    if (watchedList !== null) {
+      const watchedListParse: TVPROPS[] = JSON.parse(watchedList);
+      setWatched(watchedListParse);
+    }
+    if (favoriteList !== null) {
+      const favoriteListParse: TVPROPS[] = JSON.parse(favoriteList);
+      setFavorites(favoriteListParse);
     }
   };
 
@@ -44,34 +51,43 @@ export default function App() {
               <WatchedListVisibleContext.Provider
                 value={[watchedListVisible, setWatchedListVisible]}
               >
-                <Stack.Navigator
-                  screenOptions={{
-                    headerStyle: {
-                      backgroundColor: "darkslategrey",
-                    },
-                    headerTintColor: "#fff",
-                    headerTitleStyle: {
-                      fontWeight: "bold",
-                      alignSelf: "center",
-                    },
-                    headerTitleAlign: "center",
-                  }}
-                >
-                  <Stack.Screen
-                    name="Home"
-                    component={HomeScreen}
-                    options={{
-                      title: "Search",
+                <FavoritesContext.Provider value={[favorites, setFavorites]}>
+                  <Stack.Navigator
+                    screenOptions={{
+                      headerStyle: {
+                        backgroundColor: "darkslategrey",
+                      },
+                      headerTintColor: "#fff",
+                      headerTitleStyle: {
+                        fontWeight: "bold",
+                        alignSelf: "center",
+                      },
+                      headerTitleAlign: "center",
                     }}
-                  />
-                  <Stack.Screen
-                    name="WatchedList"
-                    component={WatchedList}
-                    options={{
-                      title: "My Watch List",
-                    }}
-                  />
-                </Stack.Navigator>
+                  >
+                    <Stack.Screen
+                      name="Home"
+                      component={HomeScreen}
+                      options={{
+                        title: "Search",
+                      }}
+                    />
+                    <Stack.Screen
+                      name="WatchedList"
+                      component={WatchedList}
+                      options={{
+                        title: "My Watch List",
+                      }}
+                    />
+                    <Stack.Screen
+                      name="Favorites"
+                      component={Favorites}
+                      options={{
+                        title: "My Favorites",
+                      }}
+                    />
+                  </Stack.Navigator>
+                </FavoritesContext.Provider>
               </WatchedListVisibleContext.Provider>
             </SearchContext.Provider>
           </CheckBoxContext.Provider>
