@@ -29,7 +29,7 @@ const WatchedList: React.FC<HomeScreenProps> = (props) => {
         <View
           style={{
             width: "48%",
-            marginHorizontal: 5,
+            marginHorizontal: 3,
           }}
         >
           <Button
@@ -40,7 +40,7 @@ const WatchedList: React.FC<HomeScreenProps> = (props) => {
             }}
           />
         </View>
-        <View style={{ width: "48%" }}>
+        <View style={{ width: "48%", marginHorizontal: 3 }}>
           <Button
             title="View Favorites"
             onPress={() => {

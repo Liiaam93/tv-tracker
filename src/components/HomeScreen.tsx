@@ -2,11 +2,9 @@ import React, { useContext } from "react";
 import { View, Button } from "react-native";
 import { RootStackParamList, TVPROPS } from "../../types";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   TVDataContext,
   SearchContext,
-  WatchListContext,
   CheckBoxContext,
 } from "../context/context";
 import SearchBar from "./SearchBar";
@@ -24,6 +22,13 @@ const HomeScreen: React.FC<HomeScreenProps> = (props) => {
   const [tvData, setTVData] = useContext(TVDataContext);
   const [search, setSearch] = useContext(SearchContext);
   const [checkBox, setCheckBox] = useContext(CheckBoxContext);
+
+  const handleKeyDown = (e: any) => {
+    if (e.nativeEvent.key == "Enter") {
+      handleSearch ? handleSearch(search) : "";
+    }
+  };
+
   const handleSearch = async (searchInput: string) => {
     let type: string = "";
     if (checkBox === "All") {
@@ -32,9 +37,9 @@ const HomeScreen: React.FC<HomeScreenProps> = (props) => {
       type = `&type=${checkBox}`;
     }
     const urls = [
-      `https://www.omdbapi.com/?apikey=${API_KEY}&s=${searchInput}${type}`,
-      `https://www.omdbapi.com/?apikey=${API_KEY}&s=${searchInput}&page=2${type}`,
-      `https://www.omdbapi.com/?apikey=${API_KEY}&s=${searchInput}&page=3${type}`,
+      `https://www.omdbapi.com/?apikey=${API_KEY}&s=${searchInput.trim()}${type}`,
+      `https://www.omdbapi.com/?apikey=${API_KEY}&s=${searchInput.trim()}&page=2${type}`,
+      `https://www.omdbapi.com/?apikey=${API_KEY}&s=${searchInput.trim()}&page=3${type}`,
     ];
 
     const data = await Promise.all(
@@ -56,7 +61,7 @@ const HomeScreen: React.FC<HomeScreenProps> = (props) => {
         <View
           style={{
             width: "48%",
-            marginHorizontal: 5,
+            marginHorizontal: 3,
           }}
         >
           <Button
@@ -67,7 +72,7 @@ const HomeScreen: React.FC<HomeScreenProps> = (props) => {
             }}
           />
         </View>
-        <View style={{ width: "48%" }}>
+        <View style={{ width: "48%", marginHorizontal: 3 }}>
           <Button
             title="View Favorites"
             onPress={() => {

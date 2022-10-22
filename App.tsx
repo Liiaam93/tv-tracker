@@ -57,6 +57,7 @@ export default function App() {
                       headerStyle: {
                         backgroundColor: "darkslategrey",
                       },
+
                       headerTintColor: "#fff",
                       headerTitleStyle: {
                         fontWeight: "bold",

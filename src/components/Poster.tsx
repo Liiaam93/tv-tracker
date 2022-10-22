@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Button, Image, Pressable, Text, View } from "react-native";
+import { Image, Pressable, Text, View } from "react-native";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { TVPROPS } from "../../types";
@@ -10,6 +10,7 @@ import {
   FavoritesContext,
   WatchListContext,
 } from "../context/context";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 const API_KEY = "8ecf88bb"; // OMDb API Key
 
@@ -19,6 +20,11 @@ type Props = {
 const saveToLocalStorage = async (items: TVPROPS[]) => {
   await AsyncStorage.setItem("react-watched", JSON.stringify(items));
 };
+
+const saveToFavorites = async (items: TVPROPS[]) => {
+  await AsyncStorage.setItem("react-favorites", JSON.stringify(items));
+};
+
 const Poster = ({ data }: Props) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [TVInfo, setTVInfo] = useState<any>();
@@ -46,11 +52,11 @@ const Poster = ({ data }: Props) => {
         favorites.filter((favourite) => favourite.imdbID !== data.imdbID)
       );
       await AsyncStorage.setItem("react-favorites", JSON.stringify(favorites));
-      saveToLocalStorage(favorites);
+      saveToFavorites(favorites);
     } else {
       setFavorites([data, ...favorites]);
       await AsyncStorage.setItem("react-favorites", JSON.stringify(favorites));
-      saveToLocalStorage(favorites);
+      saveToFavorites(favorites);
     }
   };
   const handleClick = async () => {
@@ -82,22 +88,30 @@ const Poster = ({ data }: Props) => {
             />
           </View>
           <Text style={styles.posterText}>{data?.Title}</Text>
-          <Button
-            title={
-              watched?.some((w) => w.imdbID === data.imdbID)
-                ? "Remove from Watched"
-                : "Add to Watched"
-            }
-            onPress={() => handleWatched(data)}
-          ></Button>
-          <Button
-            title={
-              favorites?.some((w) => w.imdbID === data.imdbID)
-                ? "Remove from Favorites"
-                : "Add to Favorites"
-            }
-            onPress={() => handleFavorite(data)}
-          ></Button>
+          <View style={{ flexDirection: "row", justifyContent: "center" }}>
+            <Ionicons.Button
+              backgroundColor={"slategrey"}
+              onPress={() => handleWatched(data)}
+              name={
+                watched?.some((w) => w.imdbID === data.imdbID)
+                  ? "eye"
+                  : "eye-off"
+              }
+              size={32}
+              color="white"
+            />
+            <Ionicons.Button
+              backgroundColor={"slategrey"}
+              onPress={() => handleFavorite(data)}
+              name={
+                favorites?.some((w) => w.imdbID === data.imdbID)
+                  ? "heart"
+                  : "heart-outline"
+              }
+              size={32}
+              color="white"
+            />
+          </View>
         </Pressable>
       ) : (
         ""

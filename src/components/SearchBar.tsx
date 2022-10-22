@@ -9,6 +9,10 @@ type Props = {
 };
 
 const SearchBar = ({ setSearch, handleSearch, search }: Props) => {
+  const handleKeyDown = () => {
+    handleSearch ? handleSearch(search) : "";
+  };
+
   return (
     <View style={styles.screenContainer}>
       <View style={styles.navContainer}>
@@ -16,6 +20,7 @@ const SearchBar = ({ setSearch, handleSearch, search }: Props) => {
           style={styles.searchBox}
           onChangeText={(text) => setSearch(text)}
           placeholder={"Film, TV Show, Game..."}
+          onSubmitEditing={() => handleKeyDown()}
         ></TextInput>
         <View style={styles.searchButton}>
           <Button
