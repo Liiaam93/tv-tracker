@@ -45,7 +45,7 @@ const Favorites: React.FC<FavoriteScreenProps> = (props) => {
           <Button
             title="View Watch List"
             onPress={() => {
-              props.navigation.navigate("WatchedList");
+              props.navigation.navigate("WatchList");
               setSearch("");
             }}
           />

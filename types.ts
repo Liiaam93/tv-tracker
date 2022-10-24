@@ -8,8 +8,9 @@ export interface TVPROPS {
 
 export type RootStackParamList = {
   Home: undefined;
-  WatchedList: undefined;
+  Seen: undefined;
   Favorites: undefined;
+  WatchList: undefined;
 };
 
 export type TVDataContextType = [

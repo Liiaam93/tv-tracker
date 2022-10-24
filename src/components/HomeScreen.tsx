@@ -16,9 +16,9 @@ import { styles } from "../styles/styles";
 
 const API_KEY = "8ecf88bb"; // OMDb API Key
 
-type HomeScreenProps = NativeStackScreenProps<RootStackParamList, "Home">;
+// type HomeScreenProps = NativeStackScreenProps<RootStackParamList, "Home">;
 
-const HomeScreen: React.FC<HomeScreenProps> = (props) => {
+const HomeScreen: React.FC = () => {
   const [tvData, setTVData] = useContext(TVDataContext);
   const [search, setSearch] = useContext(SearchContext);
   const [checkBox, setCheckBox] = useContext(CheckBoxContext);
@@ -64,10 +64,10 @@ const HomeScreen: React.FC<HomeScreenProps> = (props) => {
             marginHorizontal: 3,
           }}
         >
-          <Button
+          {/* <Button
             title="View Watch List"
             onPress={() => {
-              props.navigation.navigate("WatchedList");
+              props.navigation.navigate("Seen");
               setSearch("");
             }}
           />
@@ -79,7 +79,7 @@ const HomeScreen: React.FC<HomeScreenProps> = (props) => {
               props.navigation.navigate("Favorites");
               setSearch("");
             }}
-          />
+          /> */}
         </View>
       </View>
       <SearchBar

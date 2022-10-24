@@ -13,9 +13,9 @@ import { ScrollView } from "react-native-gesture-handler";
 import Poster from "./Poster";
 import { styles } from "../styles/styles";
 
-type HomeScreenProps = NativeStackScreenProps<RootStackParamList, "Seen">;
+type HomeScreenProps = NativeStackScreenProps<RootStackParamList, "WatchList">;
 
-const WatchedList: React.FC<HomeScreenProps> = (props) => {
+const WatchList: React.FC<HomeScreenProps> = (props) => {
   const [search, setSearch] = useContext(SearchContext);
   const [watched] = useContext(WatchListContext);
   const [checkBox, setCheckBox] = useContext(CheckBoxContext);
@@ -64,4 +64,4 @@ const WatchedList: React.FC<HomeScreenProps> = (props) => {
   );
 };
 
-export default WatchedList;
+export default WatchList;
