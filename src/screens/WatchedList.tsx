@@ -1,19 +1,16 @@
 import React, { useContext } from "react";
-import { View, Button } from "react-native";
-import { RootStackParamList, TVPROPS } from "../../types";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { View } from "react-native";
+import { TVPROPS } from "../../types";
 import {
   SearchContext,
   WatchedListContext,
   CheckBoxContext,
 } from "../context/context";
-import SearchBar from "./SearchBar";
-import RadioFilter from "./RadioFilter";
+import SearchBar from "../components/SearchBar";
+import RadioFilter from "../components/RadioFilter";
 import { ScrollView } from "react-native-gesture-handler";
-import Poster from "./Poster";
+import Poster from "../components/Poster";
 import { styles } from "../styles/styles";
-
-type HomeScreenProps = NativeStackScreenProps<RootStackParamList, "Seen">;
 
 const WatchedList: React.FC = () => {
   const [search, setSearch] = useContext(SearchContext);

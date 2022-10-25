@@ -7,13 +7,14 @@ import {
   SearchContext,
   CheckBoxContext,
 } from "../context/context";
-import SearchBar from "./SearchBar";
+import SearchBar from "../components/SearchBar";
 import axios from "axios";
-import RadioFilter from "./RadioFilter";
+import RadioFilter from "../components/RadioFilter";
 import { ScrollView } from "react-native-gesture-handler";
-import Poster from "./Poster";
+import Poster from "../components/Poster";
 import { styles } from "../styles/styles";
 import { Keyboard } from "react-native";
+import Intro from "../components/Intro";
 
 const API_KEY = "8ecf88bb"; // OMDb API Key
 
@@ -71,59 +72,7 @@ const HomeScreen: React.FC = () => {
         search={search}
       />
       <RadioFilter setCheckBox={setCheckBox} checkBox={checkBox} />
-      {tvData.length < 1 && (
-        <View
-          style={[
-            styles.modalPlot,
-            {
-              alignItems: "center",
-              alignContent: "center",
-              margin: 10,
-              backgroundColor: "slategrey",
-              minHeight: "70%",
-            },
-          ]}
-        >
-          <Text style={{ fontWeight: "600", fontSize: 24, margin: 20 }}>
-            How to use
-          </Text>
-          <Text style={{ fontSize: 20, marginTop: 15 }}>
-            <MaterialCommunityIcons name="magnify" size={24} color="black" />
-            Search
-          </Text>
-          <Text style={styles.whiteText}>
-            Search for a movie, tv show or a game...
-          </Text>
-          <Text style={{ fontSize: 20, marginTop: 15 }}>
-            <MaterialCommunityIcons name="eye" size={24} color="black" /> Seen
-          </Text>
-          <Text style={styles.whiteText}>
-            Stuff you've seen! Mark things using the 'eye' icon.
-          </Text>
-          <Text style={{ fontSize: 20, marginTop: 15 }}>
-            <MaterialCommunityIcons
-              name="heart-outline"
-              size={24}
-              color="black"
-            />{" "}
-            Favorites
-          </Text>
-          <Text style={styles.whiteText}>
-            What do you think this is for??? Use the heart icon dummy
-          </Text>
-          <Text style={{ fontSize: 20, marginTop: 15 }}>
-            <MaterialCommunityIcons name="history" size={24} color="black" />{" "}
-            Watch List
-          </Text>
-          <Text style={styles.whiteText}>
-            Stuff you haven't watched yet, but want to!
-          </Text>
-          <Text style={{ fontSize: 20, marginTop: 15 }}>Filters</Text>
-          <Text style={styles.whiteText}>
-            Use the filters on any page to narrow down your search!
-          </Text>
-        </View>
-      )}
+      {tvData.length < 1 && <Intro />}
       <ScrollView contentContainerStyle={styles.flexRow}>
         {tvData.map((data: TVPROPS, index: number) => (
           <Poster key={index} data={data} />

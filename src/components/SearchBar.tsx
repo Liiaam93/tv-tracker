@@ -10,7 +10,7 @@ type Props = {
   search: string;
 };
 
-const SearchBar = ({ setSearch, handleSearch, search }: Props) => {
+const SearchBar: React.FC<Props> = ({ setSearch, handleSearch, search }) => {
   const handleKeyDown = () => {
     handleSearch ? handleSearch(search) : "";
   };

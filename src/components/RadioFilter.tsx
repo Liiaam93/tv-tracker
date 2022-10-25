@@ -7,7 +7,7 @@ type Props = {
   checkBox: string;
   setCheckBox: (value: string) => void;
 };
-const RadioFilter = ({ checkBox, setCheckBox }: Props) => {
+const RadioFilter: React.FC<Props> = ({ checkBox, setCheckBox }) => {
   return (
     <View style={styles.flexRow}>
       <View style={styles.radioButton}>

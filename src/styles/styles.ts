@@ -10,6 +10,19 @@ export const styles = StyleSheet.create({
   screenContainer: {
     backgroundColor: "darkslategrey",
   },
+  intro: {
+    alignItems: "center",
+    alignContent: "center",
+    margin: 10,
+    backgroundColor: "slategrey",
+    minHeight: "70%",
+    textAlign: "center",
+    borderWidth: 1,
+    borderRadius: 10,
+    padding: 10,
+    borderColor: "royalblue",
+  },
+  introText: { fontSize: 20, marginTop: 15 },
   navContainer: {
     flexDirection: "row",
     width: "100%",

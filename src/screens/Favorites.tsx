@@ -1,27 +1,30 @@
 import React, { useContext } from "react";
+import { View } from "react-native";
 import { TVPROPS } from "../../types";
 import {
   SearchContext,
-  WatchListContext,
   CheckBoxContext,
+  FavoritesContext,
 } from "../context/context";
-import SearchBar from "./SearchBar";
-import RadioFilter from "./RadioFilter";
+
+import SearchBar from "../components/SearchBar";
+import RadioFilter from "../components/RadioFilter";
 import { ScrollView } from "react-native-gesture-handler";
-import Poster from "./Poster";
+import Poster from "../components/Poster";
 import { styles } from "../styles/styles";
 
-const WatchList: React.FC = () => {
+const Favorites: React.FC = () => {
   const [search, setSearch] = useContext(SearchContext);
-  const [watchList] = useContext(WatchListContext);
   const [checkBox, setCheckBox] = useContext(CheckBoxContext);
+  const [favorites] = useContext(FavoritesContext);
 
   return (
     <>
+      <View style={styles.navButtons}></View>
       <SearchBar setSearch={setSearch} search={search} />
       <RadioFilter setCheckBox={setCheckBox} checkBox={checkBox} />
       <ScrollView contentContainerStyle={styles.flexRow}>
-        {watchList
+        {favorites
           ?.filter((w) => w.Title.includes(search))
           .sort(
             (a, b) =>
@@ -35,4 +38,4 @@ const WatchList: React.FC = () => {
   );
 };
 
-export default WatchList;
+export default Favorites;

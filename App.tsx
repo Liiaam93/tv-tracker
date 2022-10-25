@@ -13,10 +13,10 @@ import {
   FavoritesContext,
 } from "./src/context/context";
 import { BottomNavigation } from "react-native-paper";
-import HomeScreen from "./src/components/HomeScreen";
-import WatchedList from "./src/components/WatchedList";
-import Favorites from "./src/components/Favorites";
-import WatchList from "./src/components/WatchList";
+import HomeScreen from "./src/screens/HomeScreen";
+import WatchedList from "./src/screens/WatchedList";
+import Favorites from "./src/screens/Favorites";
+import WatchList from "./src/screens/WatchList";
 
 export default function App() {
   const [search, setSearch] = useState<string>("");
