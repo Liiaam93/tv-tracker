@@ -7,6 +7,10 @@ import {
 
 export const SearchContext = createContext<StringContextType>(["", () => null]);
 export const TVDataContext = createContext<TVDataContextType>([[], () => null]);
+export const WatchedListContext = createContext<TVDataContextType>([
+  [],
+  () => null,
+]);
 export const WatchListContext = createContext<TVDataContextType>([
   [],
   () => null,

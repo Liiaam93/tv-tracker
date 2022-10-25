@@ -4,7 +4,7 @@ import { RootStackParamList, TVPROPS } from "../../types";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import {
   SearchContext,
-  WatchListContext,
+  WatchedListContext,
   CheckBoxContext,
 } from "../context/context";
 import SearchBar from "./SearchBar";
@@ -15,9 +15,9 @@ import { styles } from "../styles/styles";
 
 type HomeScreenProps = NativeStackScreenProps<RootStackParamList, "Seen">;
 
-const WatchedList: React.FC<HomeScreenProps> = (props) => {
+const WatchedList: React.FC = () => {
   const [search, setSearch] = useContext(SearchContext);
-  const [watched] = useContext(WatchListContext);
+  const [watched] = useContext(WatchedListContext);
   const [checkBox, setCheckBox] = useContext(CheckBoxContext);
 
   return (
@@ -28,24 +28,7 @@ const WatchedList: React.FC<HomeScreenProps> = (props) => {
             width: "48%",
             marginHorizontal: 3,
           }}
-        >
-          <Button
-            title="Back to Search"
-            onPress={() => {
-              props.navigation.navigate("Home");
-              setSearch("");
-            }}
-          />
-        </View>
-        <View style={{ width: "48%", marginHorizontal: 3 }}>
-          <Button
-            title="View Favorites"
-            onPress={() => {
-              props.navigation.navigate("Favorites");
-              setSearch("");
-            }}
-          />
-        </View>
+        ></View>
       </View>
       <SearchBar setSearch={setSearch} search={search} />
       <RadioFilter setCheckBox={setCheckBox} checkBox={checkBox} />
@@ -54,7 +37,7 @@ const WatchedList: React.FC<HomeScreenProps> = (props) => {
           ?.filter((w) => w.Title.includes(search))
           .sort(
             (a, b) =>
-              parseInt(b.Year.slice(0, 3)) - parseInt(a.Year.slice(0, 3))
+              parseInt(b.Year.slice(0, 4)) - parseInt(a.Year.slice(0, 4))
           )
           .map((data: TVPROPS, index: number) => (
             <Poster key={index} data={data} />

@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
-import { View, Button } from "react-native";
-import { RootStackParamList, TVPROPS } from "../../types";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { View, Text } from "react-native";
+import { TVPROPS } from "../../types";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import {
   TVDataContext,
   SearchContext,
@@ -13,10 +13,9 @@ import RadioFilter from "./RadioFilter";
 import { ScrollView } from "react-native-gesture-handler";
 import Poster from "./Poster";
 import { styles } from "../styles/styles";
+import { Keyboard } from "react-native";
 
 const API_KEY = "8ecf88bb"; // OMDb API Key
-
-// type HomeScreenProps = NativeStackScreenProps<RootStackParamList, "Home">;
 
 const HomeScreen: React.FC = () => {
   const [tvData, setTVData] = useContext(TVDataContext);
@@ -53,6 +52,7 @@ const HomeScreen: React.FC = () => {
     const flatData = data.flat(1);
     const tvd = flatData.filter((e) => e !== undefined);
     setTVData(tvd);
+    Keyboard.dismiss();
   };
 
   return (
@@ -63,24 +63,7 @@ const HomeScreen: React.FC = () => {
             width: "48%",
             marginHorizontal: 3,
           }}
-        >
-          {/* <Button
-            title="View Watch List"
-            onPress={() => {
-              props.navigation.navigate("Seen");
-              setSearch("");
-            }}
-          />
-        </View>
-        <View style={{ width: "48%", marginHorizontal: 3 }}>
-          <Button
-            title="View Favorites"
-            onPress={() => {
-              props.navigation.navigate("Favorites");
-              setSearch("");
-            }}
-          /> */}
-        </View>
+        ></View>
       </View>
       <SearchBar
         setSearch={setSearch}
@@ -88,6 +71,59 @@ const HomeScreen: React.FC = () => {
         search={search}
       />
       <RadioFilter setCheckBox={setCheckBox} checkBox={checkBox} />
+      {tvData.length < 1 && (
+        <View
+          style={[
+            styles.modalPlot,
+            {
+              alignItems: "center",
+              alignContent: "center",
+              margin: 10,
+              backgroundColor: "slategrey",
+              minHeight: "70%",
+            },
+          ]}
+        >
+          <Text style={{ fontWeight: "600", fontSize: 24, margin: 20 }}>
+            How to use
+          </Text>
+          <Text style={{ fontSize: 20, marginTop: 15 }}>
+            <MaterialCommunityIcons name="magnify" size={24} color="black" />
+            Search
+          </Text>
+          <Text style={styles.whiteText}>
+            Search for a movie, tv show or a game...
+          </Text>
+          <Text style={{ fontSize: 20, marginTop: 15 }}>
+            <MaterialCommunityIcons name="eye" size={24} color="black" /> Seen
+          </Text>
+          <Text style={styles.whiteText}>
+            Stuff you've seen! Mark things using the 'eye' icon.
+          </Text>
+          <Text style={{ fontSize: 20, marginTop: 15 }}>
+            <MaterialCommunityIcons
+              name="heart-outline"
+              size={24}
+              color="black"
+            />{" "}
+            Favorites
+          </Text>
+          <Text style={styles.whiteText}>
+            What do you think this is for??? Use the heart icon dummy
+          </Text>
+          <Text style={{ fontSize: 20, marginTop: 15 }}>
+            <MaterialCommunityIcons name="history" size={24} color="black" />{" "}
+            Watch List
+          </Text>
+          <Text style={styles.whiteText}>
+            Stuff you haven't watched yet, but want to!
+          </Text>
+          <Text style={{ fontSize: 20, marginTop: 15 }}>Filters</Text>
+          <Text style={styles.whiteText}>
+            Use the filters on any page to narrow down your search!
+          </Text>
+        </View>
+      )}
       <ScrollView contentContainerStyle={styles.flexRow}>
         {tvData.map((data: TVPROPS, index: number) => (
           <Poster key={index} data={data} />

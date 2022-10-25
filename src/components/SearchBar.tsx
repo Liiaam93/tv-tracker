@@ -1,6 +1,8 @@
 import React from "react";
 import { Button, TextInput, View } from "react-native";
+import { Searchbar } from "react-native-paper";
 import { styles } from "../styles/styles";
+import { Keyboard } from "react-native";
 
 type Props = {
   setSearch: (value: string) => void;
@@ -15,20 +17,17 @@ const SearchBar = ({ setSearch, handleSearch, search }: Props) => {
 
   return (
     <View style={styles.screenContainer}>
-      <View style={styles.navContainer}>
-        <TextInput
-          style={styles.searchBox}
-          onChangeText={(text) => setSearch(text)}
-          placeholder={"Film, TV Show, Game..."}
-          onSubmitEditing={() => handleKeyDown()}
-        ></TextInput>
-        <View style={styles.searchButton}>
-          <Button
-            onPress={() => (handleSearch ? handleSearch(search) : "")}
-            title="Search"
-          />
-        </View>
-      </View>
+      <View style={styles.navContainer}></View>
+      <Searchbar
+        placeholder="Search"
+        value={search}
+        onChangeText={(text) => setSearch(text)}
+        onSubmitEditing={() => handleKeyDown()}
+        onIconPress={() =>
+          handleSearch ? handleSearch(search) : Keyboard.dismiss()
+        }
+        style={{ margin: 10 }}
+      />
     </View>
   );
 };

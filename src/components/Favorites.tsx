@@ -14,43 +14,14 @@ import { ScrollView } from "react-native-gesture-handler";
 import Poster from "./Poster";
 import { styles } from "../styles/styles";
 
-type FavoriteScreenProps = NativeStackScreenProps<
-  RootStackParamList,
-  "Favorites"
->;
-
-const Favorites: React.FC<FavoriteScreenProps> = (props) => {
+const Favorites: React.FC = () => {
   const [search, setSearch] = useContext(SearchContext);
   const [checkBox, setCheckBox] = useContext(CheckBoxContext);
   const [favorites] = useContext(FavoritesContext);
 
   return (
     <>
-      <View style={styles.navButtons}>
-        <View
-          style={{
-            width: "48%",
-            marginHorizontal: 3,
-          }}
-        >
-          <Button
-            title="Go back to Search"
-            onPress={() => {
-              props.navigation.navigate("Home");
-              setSearch("");
-            }}
-          />
-        </View>
-        <View style={{ width: "48%", marginHorizontal: 3 }}>
-          <Button
-            title="View Watch List"
-            onPress={() => {
-              props.navigation.navigate("WatchList");
-              setSearch("");
-            }}
-          />
-        </View>
-      </View>
+      <View style={styles.navButtons}></View>
       <SearchBar setSearch={setSearch} search={search} />
       <RadioFilter setCheckBox={setCheckBox} checkBox={checkBox} />
       <ScrollView contentContainerStyle={styles.flexRow}>
@@ -58,7 +29,7 @@ const Favorites: React.FC<FavoriteScreenProps> = (props) => {
           ?.filter((w) => w.Title.includes(search))
           .sort(
             (a, b) =>
-              parseInt(b.Year.slice(0, 3)) - parseInt(a.Year.slice(0, 3))
+              parseInt(b.Year.slice(0, 4)) - parseInt(a.Year.slice(0, 4))
           )
           .map((data: TVPROPS, index: number) => (
             <Poster key={index} data={data} />

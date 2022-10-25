@@ -14,6 +14,7 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     width: "100%",
     padding: 5,
+    marginTop: 40,
   },
   searchBox: {
     textAlign: "center",
