@@ -39,9 +39,7 @@ const Poster = ({ data }: Props) => {
 
   const handleWatched = async (data: TVPROPS) => {
     if (watched.includes(data)) {
-      setWatched(
-        watched.filter((favourite) => favourite.imdbID !== data.imdbID)
-      );
+      setWatched(watched.filter((w) => w.imdbID !== data.imdbID));
       await AsyncStorage.setItem("react-watched", JSON.stringify(watched));
       saveToLocalStorage(watched);
     } else {
@@ -53,9 +51,7 @@ const Poster = ({ data }: Props) => {
 
   const handleFavorite = async (data: TVPROPS) => {
     if (favorites.includes(data)) {
-      setFavorites(
-        favorites.filter((favourite) => favourite.imdbID !== data.imdbID)
-      );
+      setFavorites(favorites.filter((f) => f.imdbID !== data.imdbID));
       await AsyncStorage.setItem("react-favorites", JSON.stringify(favorites));
       saveToFavorites(favorites);
     } else {
