@@ -63,7 +63,7 @@ const Poster = ({ data }: Props) => {
 
   const handleWatchLater = async (data: TVPROPS) => {
     if (watchList.includes(data)) {
-      setWatchList(watchList.filter((w) => w.imdbID !== data.imdbID));
+      setWatchList(watchList.filter((l) => l.imdbID !== data.imdbID));
       await AsyncStorage.setItem("react-watchlist", JSON.stringify(watchList));
       saveToWatchList(watchList);
     } else {
