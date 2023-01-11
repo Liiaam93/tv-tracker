@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Image, Pressable, Text, View } from "react-native";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -37,39 +37,35 @@ const Poster = ({ data }: Props) => {
   const [checkBox] = useContext(CheckBoxContext);
   const [watchList, setWatchList] = useContext(WatchListContext);
 
+  useEffect(() => {
+    saveToFavorites(favorites);
+    saveToLocalStorage(watched);
+    saveToWatchList(watchList);
+  }, [favorites, watched, watchList]);
+
   const handleWatched = async (data: TVPROPS) => {
     if (watched.includes(data)) {
       setWatched(watched.filter((w) => w.imdbID !== data.imdbID));
       await AsyncStorage.setItem("react-watched", JSON.stringify(watched));
-      saveToLocalStorage(watched);
     } else {
       setWatched([data, ...watched]);
       await AsyncStorage.setItem("react-watched", JSON.stringify(watched));
-      saveToLocalStorage(watched);
     }
   };
 
   const handleFavorite = async (data: TVPROPS) => {
     if (favorites.includes(data)) {
       setFavorites(favorites.filter((f) => f.imdbID !== data.imdbID));
-      await AsyncStorage.setItem("react-favorites", JSON.stringify(favorites));
-      saveToFavorites(favorites);
     } else {
       setFavorites([data, ...favorites]);
-      await AsyncStorage.setItem("react-favorites", JSON.stringify(favorites));
-      saveToFavorites(favorites);
     }
   };
 
   const handleWatchLater = async (data: TVPROPS) => {
     if (watchList.includes(data)) {
       setWatchList(watchList.filter((l) => l.imdbID !== data.imdbID));
-      await AsyncStorage.setItem("react-watchlist", JSON.stringify(watchList));
-      saveToWatchList(watchList);
     } else {
       setWatchList([data, ...watchList]);
-      await AsyncStorage.setItem("react-watchlist", JSON.stringify(watchList));
-      saveToWatchList(watchList);
     }
   };
 
