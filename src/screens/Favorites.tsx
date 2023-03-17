@@ -1,5 +1,5 @@
-import React, { useContext } from "react";
-import { View } from "react-native";
+import React, { useContext, lazy } from "react";
+import { FlatList, View } from "react-native";
 import { TVPROPS } from "../../types";
 import {
   SearchContext,
@@ -9,8 +9,8 @@ import {
 
 import SearchBar from "../components/SearchBar";
 import RadioFilter from "../components/RadioFilter";
-import { ScrollView } from "react-native-gesture-handler";
 import Poster from "../components/Poster";
+
 import { styles } from "../styles/styles";
 
 const Favorites: React.FC = () => {
@@ -23,17 +23,22 @@ const Favorites: React.FC = () => {
       <View style={styles.navButtons}></View>
       <SearchBar setSearch={setSearch} search={search} />
       <RadioFilter setCheckBox={setCheckBox} checkBox={checkBox} />
-      <ScrollView contentContainerStyle={styles.flexRow}>
-        {favorites
-          ?.filter((w) => w.Title.includes(search))
+
+      <FlatList
+        initialNumToRender={12}
+        numColumns={3}
+        data={favorites
           .sort(
             (a, b) =>
               parseInt(b.Year.slice(0, 4)) - parseInt(a.Year.slice(0, 4))
           )
-          .map((data: TVPROPS, index: number) => (
-            <Poster key={index} data={data} />
-          ))}
-      </ScrollView>
+          .filter((w) => w.Title.includes(search))
+          .filter((w) => w.Type === checkBox || checkBox === "All")}
+        keyExtractor={(watched) => watched.imdbID}
+        renderItem={({ item }) => {
+          return <Poster data={item} />;
+        }}
+      />
     </>
   );
 };

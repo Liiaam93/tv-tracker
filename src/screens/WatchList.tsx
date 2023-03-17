@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, lazy } from "react";
 import { TVPROPS } from "../../types";
 import {
   SearchContext,
@@ -9,7 +9,9 @@ import SearchBar from "../components/SearchBar";
 import RadioFilter from "../components/RadioFilter";
 import { ScrollView } from "react-native-gesture-handler";
 import Poster from "../components/Poster";
+
 import { styles } from "../styles/styles";
+import { FlatList } from "react-native";
 
 const WatchList: React.FC = () => {
   const [search, setSearch] = useContext(SearchContext);
@@ -20,17 +22,22 @@ const WatchList: React.FC = () => {
     <>
       <SearchBar setSearch={setSearch} search={search} />
       <RadioFilter setCheckBox={setCheckBox} checkBox={checkBox} />
-      <ScrollView contentContainerStyle={styles.flexRow}>
-        {watchList
-          ?.filter((w) => w.Title.includes(search))
+
+      <FlatList
+        initialNumToRender={12}
+        numColumns={3}
+        data={watchList
           .sort(
             (a, b) =>
               parseInt(b.Year.slice(0, 4)) - parseInt(a.Year.slice(0, 4))
           )
-          .map((data: TVPROPS, index: number) => (
-            <Poster key={index} data={data} />
-          ))}
-      </ScrollView>
+          .filter((w) => w.Title.includes(search))
+          .filter((w) => w.Type === checkBox || checkBox === "All")}
+        keyExtractor={(watched) => watched.imdbID}
+        renderItem={({ item }) => {
+          return <Poster data={item} />;
+        }}
+      />
     </>
   );
 };

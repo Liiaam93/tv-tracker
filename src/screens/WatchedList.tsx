@@ -1,5 +1,5 @@
-import React, { useContext } from "react";
-import { View } from "react-native";
+import React, { useContext, useEffect, useState, lazy } from "react";
+import { View, FlatList } from "react-native";
 import { TVPROPS } from "../../types";
 import {
   SearchContext,
@@ -29,17 +29,37 @@ const WatchedList: React.FC = () => {
       </View>
       <SearchBar setSearch={setSearch} search={search} />
       <RadioFilter setCheckBox={setCheckBox} checkBox={checkBox} />
-      <ScrollView contentContainerStyle={styles.flexRow}>
+      {/* <ScrollView contentContainerStyle={styles.flexRow}>
         {watched
-          ?.filter((w) => w.Title.includes(search))
           .sort(
             (a, b) =>
               parseInt(b.Year.slice(0, 4)) - parseInt(a.Year.slice(0, 4))
           )
-          .map((data: TVPROPS, index: number) => (
-            <Poster key={index} data={data} />
+          .filter((w) => w.Title.includes(search))
+          ?.map((data: TVPROPS, index: number) => (
+            <React.Suspense
+              fallback={<Text>Loading...</Text>}
+              key={data.imdbID}
+            >
+              <PosterComponent key={data.imdbID + index} data={data} />
+            </React.Suspense>
           ))}
-      </ScrollView>
+      </ScrollView> */}
+      <FlatList
+        initialNumToRender={12}
+        numColumns={3}
+        data={watched
+          .sort(
+            (a, b) =>
+              parseInt(b.Year.slice(0, 4)) - parseInt(a.Year.slice(0, 4))
+          )
+          .filter((w) => w.Title.includes(search))
+          .filter((w) => w.Type === checkBox || checkBox === "All")}
+        keyExtractor={(watched) => watched.imdbID}
+        renderItem={({ item }) => {
+          return <Poster data={item} />;
+        }}
+      />
     </>
   );
 };
