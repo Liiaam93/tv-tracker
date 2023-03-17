@@ -1,5 +1,4 @@
-import React, { useContext, lazy } from "react";
-import { TVPROPS } from "../../types";
+import React, { useContext } from "react";
 import {
   SearchContext,
   WatchListContext,
@@ -7,10 +6,8 @@ import {
 } from "../context/context";
 import SearchBar from "../components/SearchBar";
 import RadioFilter from "../components/RadioFilter";
-import { ScrollView } from "react-native-gesture-handler";
 import Poster from "../components/Poster";
 
-import { styles } from "../styles/styles";
 import { FlatList } from "react-native";
 
 const WatchList: React.FC = () => {
@@ -31,7 +28,7 @@ const WatchList: React.FC = () => {
             (a, b) =>
               parseInt(b.Year.slice(0, 4)) - parseInt(a.Year.slice(0, 4))
           )
-          .filter((w) => w.Title.includes(search))
+          .filter((w) => w.Title.toLowerCase().includes(search))
           .filter((w) => w.Type === checkBox || checkBox === "All")}
         keyExtractor={(watched) => watched.imdbID}
         renderItem={({ item }) => {

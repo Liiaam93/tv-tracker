@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
-import { View, Text } from "react-native";
+import { View } from "react-native";
 import { TVPROPS } from "../../types";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import {
   TVDataContext,
   SearchContext,
@@ -22,12 +21,6 @@ const HomeScreen: React.FC = () => {
   const [tvData, setTVData] = useContext(TVDataContext);
   const [search, setSearch] = useContext(SearchContext);
   const [checkBox, setCheckBox] = useContext(CheckBoxContext);
-
-  const handleKeyDown = (e: any) => {
-    if (e.nativeEvent.key == "Enter") {
-      handleSearch ? handleSearch(search) : "";
-    }
-  };
 
   const handleSearch = async (searchInput: string) => {
     let type: string = "";
