@@ -1,8 +1,10 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { TVPROPS } from "./types";
 import { View } from "react-native";
 import { StatusBar } from "expo-status-bar";
+import * as SplashScreen from "expo-splash-screen";
+
 import {
   SearchContext,
   TVDataContext,
@@ -17,6 +19,8 @@ import HomeScreen from "./src/screens/HomeScreen";
 import WatchedList from "./src/screens/WatchedList";
 import Favorites from "./src/screens/Favorites";
 import WatchList from "./src/screens/WatchList";
+
+SplashScreen.preventAutoHideAsync();
 
 export default function App() {
   const [search, setSearch] = useState<string>("");
@@ -43,6 +47,24 @@ export default function App() {
     },
     { key: "watchlist", title: "Watch List", focusedIcon: "history" },
   ]);
+
+  const [appIsReady, setAppIsReady] = useState(false);
+
+  useEffect(() => {
+    async function prepare() {
+      try {
+        // Pre-load API calls etc
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+      } catch (e) {
+        console.warn(e);
+      } finally {
+        setAppIsReady(true);
+      }
+    }
+
+    prepare();
+  }, []);
+
   const renderScene = BottomNavigation.SceneMap({
     Home: HomeScreen,
     Seen: WatchedList,
@@ -72,8 +94,21 @@ export default function App() {
     getLocalStorage();
   }, []);
 
+  const onLayoutRootView = useCallback(async () => {
+    if (appIsReady) {
+      await SplashScreen.hideAsync();
+    }
+  }, [appIsReady]);
+
+  if (!appIsReady) {
+    return null;
+  }
+
   return (
-    <View style={{ flex: 1, backgroundColor: "darkslategrey" }}>
+    <View
+      onLayout={onLayoutRootView}
+      style={{ flex: 1, backgroundColor: "darkslategrey" }}
+    >
       <TVDataContext.Provider value={[tvData, setTVData]}>
         <WatchedListContext.Provider value={[watched, setWatched]}>
           <WatchListContext.Provider value={[watchList, setWatchList]}>
